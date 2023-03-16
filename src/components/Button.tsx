@@ -18,18 +18,18 @@ export default function Clickable({
   ...buttonAttributes
 }: ButtonProps) {
   const classes = classNames({
-    'bg-primary-400 hover:bg-primary-500 disabled:bg-primary-300 text-white':
+    'bg-primary-500 hover:bg-primary-550 disabled:bg-primary-100 text-white':
       type === 'primary',
     'bg-secondary-400 hover:bg-secondary-500 disabled:bg-secondary-300 text-white':
       type === 'secondary',
-    'bg-neutral-400 hover:bg-neutral-500 disabled:bg-neutral-300 text-black':
+    'bg-neutral-400 hover:bg-neutral-500 disabled:bg-neutral-300 text-header':
       type === 'neutral',
   })
   return (
     <button
       className={classNames(
         classes,
-        'p-2 disabled:cursor-not-allowed rounded-md font-bold text-lg',
+        'p-2 disabled:cursor-not-allowed rounded-md font-bold text-xl',
         s.button,
         className
       )}

@@ -15,6 +15,7 @@ module.exports = {
         neutral: { ...colors.slate, default: colors.slate[100] },
 
         primary: { ...colors.yellow, default: colors.yellow[400] },
+        'primary-550': '#DFAB08',
         secondary: { ...colors.sky, default: colors.sky[400] },
 
         light: colors.slate['300'],
