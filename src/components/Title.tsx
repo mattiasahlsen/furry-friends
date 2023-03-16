@@ -1,12 +1,12 @@
 import classNames from 'classnames'
 
-interface ContainerProps {
+interface TitleProps {
   children?: React.ReactNode[] | React.ReactNode
   className?: string
   type: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
 
-export default function Title({ children, className, type }: ContainerProps) {
+export default function Title({ children, className, type }: TitleProps) {
   const Tag = type
   const classes = {
     'text-3xl md:text-4xl lg:text-5xl font-semibold': type === 'h1',

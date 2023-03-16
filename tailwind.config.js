@@ -13,9 +13,12 @@ module.exports = {
         'background-light': colors.yellow[100],
         background: colors.yellow[400],
 
-        primary: colors.sky,
+        neutral: { ...colors.slate, default: colors.slate[100] },
 
-        light: colors.slate['600'],
+        primary: { ...colors.yellow, default: colors.yellow[400] },
+        secondary: { ...colors.sky, default: colors.sky[400] },
+
+        light: colors.slate['300'],
         p: colors.slate['700'],
         header: colors.slate['800'],
       },
