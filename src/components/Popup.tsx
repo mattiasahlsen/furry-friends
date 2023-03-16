@@ -23,7 +23,7 @@ export function Popup({ children, className, onDismiss }: PopupProps) {
       >
         <Icon
           name="AiOutlineCloseCircle"
-          className="absolute top-3 right-3 cursor-pointer text-neutral-600 hover:text-neutral-800"
+          className="absolute top-3 right-3 cursor-pointer text-neutral-600 hover:text-neutral-800 z-10"
           onClick={onDismiss}
         />
         {children}

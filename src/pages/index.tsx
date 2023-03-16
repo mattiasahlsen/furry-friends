@@ -16,6 +16,14 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   const [cats, setCats] = useState<ICat[]>(CATS)
 
+  const updateCat = (index: number, cat: ICat) => {
+    setCats((prev) => {
+      const newCats = [...prev]
+      newCats[index] = cat
+      return newCats
+    })
+  }
+
   return (
     <>
       <Head>
@@ -26,11 +34,15 @@ export default function Home() {
       </Head>
       <Container>
         <Main>
-          <Title type="h2">Your Fluffy Friends</Title>
+          <Title type="h2">Your Furry Friends</Title>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {cats.map((cat, index) => (
-              <Cat key={index} {...cat} />
+              <Cat
+                key={index}
+                cat={cat}
+                onUpdate={(newCat) => updateCat(index, newCat)}
+              />
             ))}
             <CreateCat onAdd={(cat) => setCats((prev) => [...prev, cat])} />
           </div>
