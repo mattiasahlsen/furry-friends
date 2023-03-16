@@ -5,4 +5,5 @@ export interface ICat {
   image: string
 
   birth: string
+  gender: string
 }

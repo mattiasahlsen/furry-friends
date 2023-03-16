@@ -8,6 +8,8 @@ import { useState } from 'react'
 import type { ICat } from './types'
 import s from './CreateCat.module.css'
 import { makeId } from '@/lib/string'
+import Select from '@/components/Select'
+import { GENDER } from './catConstants'
 
 const createCat = () => ({
   name: '',
@@ -15,6 +17,7 @@ const createCat = () => ({
   image: '',
   id: makeId(16),
   birth: '',
+  gender: GENDER[0],
 })
 
 interface EditCatProps {
@@ -50,7 +53,6 @@ export default function EditCat({
       const reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = () => {
-        console.log('reader.result', reader.result)
         setCat((prev) => ({ ...prev, image: reader.result as string }))
       }
     } catch (error) {
@@ -99,6 +101,16 @@ export default function EditCat({
             }
             type="date"
             label="Date of birth"
+          />
+
+          <Select
+            label="Gender"
+            value={cat.gender}
+            options={GENDER}
+            onChange={(v) => {
+              setCat((prev) => ({ ...prev, gender: v }))
+            }}
+            className="mt-2"
           />
         </div>
 
