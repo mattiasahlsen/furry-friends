@@ -6,6 +6,7 @@ import type { ICat } from './types'
 const initialStateCats: Record<string, ICat> = CATS.map((cat) => ({
   ...cat,
   id: JSON.stringify(cat),
+  birth: new Date().toISOString().split('T')[0],
 })).reduce(
   (acc, cat) => ({
     ...acc,

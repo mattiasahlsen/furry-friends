@@ -7,13 +7,15 @@ import Button from '@/components/Button'
 import { useState } from 'react'
 import type { ICat } from './types'
 import s from './CreateCat.module.css'
+import { makeId } from '@/lib/string'
 
-const DEFAULT_CAT = {
+const createCat = () => ({
   name: '',
   description: '',
   image: '',
-  id: '',
-}
+  id: makeId(16),
+  birth: '',
+})
 
 interface EditCatProps {
   className?: string
@@ -28,13 +30,15 @@ export default function EditCat({
   onCancel,
   cat: catToEdit,
 }: EditCatProps) {
-  const [cat, setCat] = useState<ICat>({ ...(catToEdit ?? DEFAULT_CAT) })
+  const [cat, setCat] = useState<ICat>(
+    catToEdit ? { ...catToEdit } : createCat()
+  )
 
   const isDisabled = !cat.name || !cat.description || !cat.image
 
   const close = () => {
     onCancel()
-    setCat({ ...DEFAULT_CAT })
+    setCat(createCat())
   }
   const addCat = () => {
     onDone(cat)
@@ -65,7 +69,7 @@ export default function EditCat({
         <div className="flex-1">
           <Title type="h4">Add a Fluffy Friend</Title>
           <Input
-            className="mt-4"
+            className="mt-2"
             value={cat.name}
             onChange={(e) =>
               setCat((prev) => ({ ...prev, name: e.target.value }))
@@ -75,14 +79,26 @@ export default function EditCat({
             placeholder="Cat name (required)"
           />
           <Input
-            className="mt-4"
+            className="mt-2"
             value={cat.description}
             onChange={(e) =>
               setCat((prev) => ({ ...prev, description: e.target.value }))
             }
             type="textarea"
-            label="Description"
-            placeholder="Cat description (required)"
+            label="Bio"
+            placeholder="Cat bio (required)"
+          />
+
+          <Input
+            className="mt-2 relative"
+            value={cat.birth}
+            min={new Date(1990, 0, 1).toISOString().split('T')[0]}
+            max={new Date().toISOString().split('T')[0]}
+            onChange={(e) =>
+              setCat((prev) => ({ ...prev, birth: e.target.value }))
+            }
+            type="date"
+            label="Date of birth"
           />
         </div>
 

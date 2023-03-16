@@ -3,7 +3,7 @@ import classNames from 'classnames'
 interface InputProps {
   className?: string
   inputClassName?: string
-  type: 'text' | 'textarea'
+  type: 'text' | 'textarea' | 'date'
   label?: string
 
   value: string
@@ -26,7 +26,7 @@ export default function Input({
   const Tag = type === 'textarea' ? 'textarea' : 'input'
   return (
     <div className={classNames(className)}>
-      {label && <label className="block mb-1">{label}</label>}
+      {label && <label className="block mb-1 ml-1">{label}</label>}
       <Tag
         type={type}
         className={classNames(
