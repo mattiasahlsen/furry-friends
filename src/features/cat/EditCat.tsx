@@ -61,7 +61,7 @@ export default function EditCat({
   }
 
   return (
-    <div className="w-full md:max-w-md lg:max-w-3xl">
+    <div className="w-full md:max-w-md lg:max-w-3xl lg:mx-auto">
       <div
         className={classNames(
           'flex flex-col lg:flex-row lg:gap-x-8',
@@ -125,7 +125,7 @@ export default function EditCat({
                 : 'Drag and drop your image file here'
             }
             classes={classNames(
-              '!w-full !border-solid !border-neutral-500',
+              '!w-full !border-solid !border-primary-300 bg-primary-200',
               s.fileUploader
             )}
           />

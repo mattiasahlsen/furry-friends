@@ -1,3 +1,6 @@
 .fileUploader svg path {
-  @apply !fill-neutral-500;
+  @apply !fill-primary-500;
+}
+.fileUploader span {
+  @apply !text-header;
 }

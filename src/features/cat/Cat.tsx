@@ -21,7 +21,7 @@ export default function Cat({ cat }: CatProps) {
   return (
     <div>
       <div className="bg-white rounded-md shadow-lg">
-        <div className="flex py-1 px-2 justify-end">
+        <div className="flex pt-1 px-2 justify-end">
           <Icon
             name="AiOutlineEdit"
             size={24}
@@ -41,7 +41,7 @@ export default function Cat({ cat }: CatProps) {
             alt={name}
             width={96}
             height={96}
-            className="w-24 h-24 mr-4 object-cover block flex-none rounded-md"
+            className="w-24 h-24 mr-4 object-cover block flex-none rounded-md shadow-sm"
           />
           <div>
             <Title type="h4">{name}</Title>

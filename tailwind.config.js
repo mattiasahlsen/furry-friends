@@ -9,8 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: colors.yellow,
-        'background-light': colors.yellow[100],
+        'background-light': colors.yellow[200],
         background: colors.yellow[400],
 
         neutral: { ...colors.slate, default: colors.slate[100] },

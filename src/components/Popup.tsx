@@ -17,7 +17,7 @@ export function Popup({ children, className, onDismiss }: PopupProps) {
     <div className={classes}>
       <div
         className={classNames(
-          'bg-neutral-default rounded-md shadow-lg flex-1 p-4 overflow-y-auto relative',
+          'bg-neutral-default rounded-md shadow-lg flex-1 p-4 md:pt-8 lg:pt-16 overflow-y-auto relative',
           className
         )}
       >

@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import s from './Button.module.css'
 
 interface ButtonProps {
   children?: React.ReactNode[] | React.ReactNode
@@ -28,7 +29,8 @@ export default function Clickable({
     <button
       className={classNames(
         classes,
-        'p-2 disabled:cursor-not-allowed rounded-md',
+        'p-2 disabled:cursor-not-allowed rounded-md font-bold text-lg',
+        s.button,
         className
       )}
       onClick={onClick}

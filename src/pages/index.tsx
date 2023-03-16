@@ -22,7 +22,9 @@ export default function Home() {
       </Head>
       <Container>
         <Main>
-          <Title type="h2">Your Furry Friends</Title>
+          <Title type="h2" className="text-header">
+            Your Cats
+          </Title>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {cats.map((cat, index) => (

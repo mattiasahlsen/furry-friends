@@ -1,15 +1,20 @@
 import { CATS } from '@/data/cats'
+import { makeId } from '@/lib/string'
 import type { AppState } from '@/store'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { GENDER } from './catConstants'
 import type { ICat } from './types'
 
-const initialStateCats: Record<string, ICat> = CATS.map((cat) => ({
-  ...cat,
-  id: JSON.stringify(cat),
-  birth: new Date().toISOString().split('T')[0],
-  gender: GENDER[Math.floor(Math.random() * GENDER.length)],
-})).reduce(
+const initialStateCats: Record<string, ICat> = CATS.map((catData) => {
+  const cat: ICat = {
+    ...catData,
+    id: makeId(16),
+    birth: new Date().toISOString().split('T')[0],
+    gender: GENDER[Math.floor(Math.random() * GENDER.length)],
+  }
+
+  return cat
+}).reduce(
   (acc, cat) => ({
     ...acc,
     [cat.id]: cat,
