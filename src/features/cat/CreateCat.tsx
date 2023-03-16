@@ -1,18 +1,19 @@
 import Clickable from '@/components/Clickable'
 import { Popup } from '@/components/Popup'
 import { useState } from 'react'
-import { ICat } from './types'
+import type { ICat } from './types'
 import Icon from '@/components/Icon'
 import EditCat from './EditCat'
+import { useAppDispatch } from '@/store'
+import { addCat } from './catsSlice'
 
-interface CreateCatProps {
-  onAdd: (cat: ICat) => void
-}
-export default function CreateCat({ onAdd }: CreateCatProps) {
+interface CreateCatProps {}
+export default function CreateCat(props: CreateCatProps) {
   const [showPopup, setShowPopup] = useState(false)
+  const dispatch = useAppDispatch()
 
-  const addCat = (cat: ICat) => {
-    onAdd(cat)
+  const onAdd = (cat: ICat) => {
+    dispatch(addCat({ id: JSON.stringify(cat), cat }))
     setShowPopup(false)
   }
 
@@ -30,7 +31,7 @@ export default function CreateCat({ onAdd }: CreateCatProps) {
 
       {showPopup && (
         <Popup onDismiss={() => setShowPopup(false)}>
-          <EditCat onCancel={() => setShowPopup(false)} onDone={addCat} />
+          <EditCat onCancel={() => setShowPopup(false)} onDone={onAdd} />
         </Popup>
       )}
     </div>

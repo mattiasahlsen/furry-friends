@@ -1,18 +1,20 @@
 import Icon from '@/components/Icon'
 import { Popup } from '@/components/Popup'
 import Title from '@/components/Title'
+import { useAppDispatch } from '@/store'
 import Image from 'next/image'
 import { useState } from 'react'
+import { removeCat, updateCat } from './catsSlice'
 import EditCat from './EditCat'
-import { ICat } from './types'
+import type { ICat } from './types'
 
 interface CatProps {
   cat: ICat
-  onUpdate: (cat: ICat) => void
-  onRemove: () => void
 }
-export default function Cat({ cat, onUpdate, onRemove }: CatProps) {
+export default function Cat({ cat }: CatProps) {
   const { name, description, image } = cat
+
+  const dispatch = useAppDispatch()
 
   const [editing, setEditing] = useState(false)
 
@@ -30,7 +32,7 @@ export default function Cat({ cat, onUpdate, onRemove }: CatProps) {
             name="IoMdClose"
             size={24}
             className="cursor-pointer"
-            onClick={onRemove}
+            onClick={() => dispatch(removeCat({ id: cat.id }))}
           />
         </div>
         <div className="flex px-4 pb-4">
@@ -54,7 +56,7 @@ export default function Cat({ cat, onUpdate, onRemove }: CatProps) {
           <EditCat
             cat={cat}
             onCancel={() => setEditing(false)}
-            onDone={onUpdate}
+            onDone={(cat) => dispatch(updateCat({ id: cat.id, updates: cat }))}
           />
         </Popup>
       )}

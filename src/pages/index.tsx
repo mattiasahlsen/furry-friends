@@ -1,34 +1,15 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-import { CATS } from '@/data/cats'
 import Cat from '@/features/cat/Cat'
 import Container from '@/components/Container'
 import Main from '@/components/Main'
 import Title from '@/components/Title'
 import CreateCat from '@/features/cat/CreateCat'
-import { useState } from 'react'
-import { ICat } from '@/features/cat/types'
+import { useAppSelector } from '@/store'
+import { selectCats } from '@/features/cat/catsSlice'
 
 export default function Home() {
-  const [cats, setCats] = useState<ICat[]>(CATS)
-
-  const updateCat = (index: number, cat: ICat) => {
-    setCats((prev) => {
-      const newCats = [...prev]
-      newCats[index] = cat
-      return newCats
-    })
-  }
-
-  const removeCat = (index: number) => {
-    setCats((prev) => {
-      const newCats = [...prev]
-      newCats.splice(index, 1)
-      return newCats
-    })
-  }
+  const cats = Object.values(useAppSelector(selectCats))
 
   return (
     <>
@@ -44,14 +25,9 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {cats.map((cat, index) => (
-              <Cat
-                key={index}
-                cat={cat}
-                onUpdate={(newCat) => updateCat(index, newCat)}
-                onRemove={() => removeCat(index)}
-              />
+              <Cat key={index} cat={cat} />
             ))}
-            <CreateCat onAdd={(cat) => setCats((prev) => [...prev, cat])} />
+            <CreateCat />
           </div>
         </Main>
       </Container>
