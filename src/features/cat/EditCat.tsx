@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { FileUploader } from 'react-drag-drop-files'
 import Image from 'next/image'
 import Button from '@/components/Button'
-import { useEffect, useState } from 'react'
+import { SyntheticEvent, useEffect, useState } from 'react'
 import type { ICat } from './types'
 import s from './CreateCat.module.css'
 import { makeId } from '@/lib/string'
@@ -36,8 +36,9 @@ export default function EditCat({
   const [cat, setCat] = useState<ICat>(
     catToEdit ? { ...catToEdit } : createCat()
   )
-  const [imageSrc, setImageSrc] = useState<string | undefined>(cat.image)
+  const [imageSrc, setImageSrc] = useState<string>(cat.image ?? '')
   const [imageRef, setImageRef] = useState<HTMLImageElement | null>(null)
+  const [imageError, setImageError] = useState<string | null>(null)
 
   const isDisabled = !cat.name || !cat.description || !cat.image
 
@@ -65,24 +66,40 @@ export default function EditCat({
   useEffect(() => {
     if (imageRef) {
       imageRef.addEventListener('load', () => {
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
-        if (ctx) {
-          const ratio = Math.min(200 / imageRef.width, 200 / imageRef.height)
-          const width = Math.floor(imageRef.width * ratio)
-          const height = Math.floor(imageRef.height * ratio)
-
-          canvas.width = width
-          canvas.height = height
-          ctx.drawImage(imageRef, 0, 0, width, height)
-          setCat((prev) => ({ ...prev, image: canvas.toDataURL() }))
-          console.log('saving image', canvas.toDataURL())
-        } else {
+        let canvas = document.createElement('canvas')
+        let ctx = canvas.getContext('2d')
+        if (!ctx) {
           console.error('error', 'no context')
+          return
         }
+
+        const scale = Math.min(1, 300 / imageRef.naturalWidth)
+
+        canvas.width = imageRef.naturalWidth * scale
+        canvas.height = imageRef.naturalHeight * scale
+        ctx.drawImage(imageRef, 0, 0, canvas.width, canvas.height)
+        setCat((prev) => ({ ...prev, image: canvas.toDataURL() }))
       })
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageRef])
+
+  const updateImage = (url: string) => {
+    setImageError(null)
+
+    if (!url) {
+      setImageSrc('')
+      return
+    }
+
+    try {
+      new URL(url)
+      setImageSrc(url)
+    } catch {
+      setImageError('Invalid URL')
+    }
+  }
 
   return (
     <div className="w-full md:max-w-md lg:max-w-3xl lg:mx-auto">
@@ -154,6 +171,15 @@ export default function EditCat({
             )}
           />
 
+          <Input
+            className="mt-2"
+            type="text"
+            value={imageSrc.startsWith('data:image') ? '' : imageSrc}
+            onChange={(e) => updateImage(e.target.value)}
+            label="Or Paste Image URL here"
+            placeholder="Image URL (required)"
+          />
+
           {imageSrc && (
             <Image
               ref={setImageRef}
@@ -164,6 +190,10 @@ export default function EditCat({
               height={200}
               placeholder="empty"
             />
+          )}
+
+          {imageError && (
+            <div className="mt-2 text-rose-600 font-semibold">{imageError}</div>
           )}
         </div>
       </div>
