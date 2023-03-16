@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { FileUploader } from 'react-drag-drop-files'
 import Image from 'next/image'
 import Button from '@/components/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ICat } from './types'
 import s from './CreateCat.module.css'
 import { makeId } from '@/lib/string'
@@ -36,6 +36,8 @@ export default function EditCat({
   const [cat, setCat] = useState<ICat>(
     catToEdit ? { ...catToEdit } : createCat()
   )
+  const [imageSrc, setImageSrc] = useState<string | undefined>(cat.image)
+  const [imageRef, setImageRef] = useState<HTMLImageElement | null>(null)
 
   const isDisabled = !cat.name || !cat.description || !cat.image
 
@@ -53,12 +55,34 @@ export default function EditCat({
       const reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = () => {
-        setCat((prev) => ({ ...prev, image: reader.result as string }))
+        setImageSrc(reader.result as string)
       }
     } catch (error) {
       console.error('error', error)
     }
   }
+
+  useEffect(() => {
+    if (imageRef) {
+      imageRef.addEventListener('load', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        if (ctx) {
+          const ratio = Math.min(200 / imageRef.width, 200 / imageRef.height)
+          const width = Math.floor(imageRef.width * ratio)
+          const height = Math.floor(imageRef.height * ratio)
+
+          canvas.width = width
+          canvas.height = height
+          ctx.drawImage(imageRef, 0, 0, width, height)
+          setCat((prev) => ({ ...prev, image: canvas.toDataURL() }))
+          console.log('saving image', canvas.toDataURL())
+        } else {
+          console.error('error', 'no context')
+        }
+      })
+    }
+  }, [imageRef])
 
   return (
     <div className="w-full md:max-w-md lg:max-w-3xl lg:mx-auto">
@@ -130,10 +154,11 @@ export default function EditCat({
             )}
           />
 
-          {cat.image && (
+          {imageSrc && (
             <Image
+              ref={setImageRef}
               className="mt-2 lg:mt-4 w-full max-w-md max-h-60 object-cover left-full rounded-md shadow-md"
-              src={cat.image}
+              src={imageSrc}
               alt={cat.name}
               width={200}
               height={200}
@@ -147,6 +172,7 @@ export default function EditCat({
         className="mt-6 lg:mt-8 w-full"
         onClick={addCat}
         disabled={isDisabled}
+        disabledReason={'Please fill in all fields'}
       >
         {cat ? 'Save changes' : 'Add cat to collection'}
       </Button>

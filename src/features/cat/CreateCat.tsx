@@ -6,6 +6,7 @@ import Icon from '@/components/Icon'
 import EditCat from './EditCat'
 import { useAppDispatch } from '@/store'
 import { addCat } from './catsSlice'
+import { makeId } from '@/lib/string'
 
 interface CreateCatProps {}
 export default function CreateCat(props: CreateCatProps) {
@@ -13,7 +14,7 @@ export default function CreateCat(props: CreateCatProps) {
   const dispatch = useAppDispatch()
 
   const onAdd = (cat: ICat) => {
-    dispatch(addCat({ id: JSON.stringify(cat), cat }))
+    dispatch(addCat({ id: cat.id, cat }))
     setShowPopup(false)
   }
 

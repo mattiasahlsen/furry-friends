@@ -6,37 +6,60 @@ interface ButtonProps {
   className?: string
   onClick: () => void
   type: 'primary' | 'secondary' | 'neutral'
+  disabled?: boolean
+  disabledReason?: string
 
   [key: string]: unknown
 }
 
-export default function Clickable({
+export default function Button({
   children,
   className,
   onClick,
   type,
+  disabled,
+  disabledReason,
   ...buttonAttributes
 }: ButtonProps) {
   const classes = classNames({
-    'bg-primary-500 hover:bg-primary-550 disabled:bg-primary-100 text-white':
+    'bg-primary-500 enabled:hover:bg-primary-550 text-white':
       type === 'primary',
-    'bg-secondary-400 hover:bg-secondary-500 disabled:bg-secondary-300 text-white':
+    'bg-secondary-400 enabled:hover:bg-secondary-500 disabled:bg-secondary-300 text-white':
       type === 'secondary',
-    'bg-neutral-400 hover:bg-neutral-500 disabled:bg-neutral-300 text-header':
+    'bg-neutral-400 enabled:hover:bg-neutral-500 disabled:bg-neutral-300 text-header':
       type === 'neutral',
   })
+
   return (
-    <button
+    <div
       className={classNames(
-        classes,
-        'p-2 disabled:cursor-not-allowed rounded-md font-bold text-xl',
-        s.button,
+        'inline-block relative',
+        s.buttonContainer,
         className
       )}
-      onClick={onClick}
-      {...buttonAttributes}
     >
-      {children}
-    </button>
+      {disabled && disabledReason && (
+        <span
+          className={classNames(
+            s.buttonTooltip,
+            'absolute right-0 top-2 -translate-y-full text-slate-400 text-sm'
+          )}
+        >
+          {disabledReason}
+        </span>
+      )}
+      <button
+        className={classNames(
+          classes,
+          'p-2 mt-2 disabled:cursor-not-allowed rounded-md font-bold text-xl disabled:opacity-50 w-full',
+          s.button
+        )}
+        onClick={onClick}
+        disabled={disabled}
+        {...buttonAttributes}
+      >
+        {children}
+      </button>
+    </div>
   )
 }

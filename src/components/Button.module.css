@@ -1,0 +1,6 @@
+.buttonTooltip {
+  display: none;
+}
+.buttonContainer:has(button:disabled) .buttonTooltip {
+  display: inline;
+}
