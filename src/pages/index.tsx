@@ -5,12 +5,11 @@ import Container from '@/components/Container'
 import Main from '@/components/Main'
 import Title from '@/components/Title'
 import CreateCat from '@/features/cat/CreateCat'
-import { useAppSelector } from '@/store'
-import { selectCats } from '@/features/cat/catsSlice'
-import type { ICat } from '@/features/cat/types'
+import { useCats } from '@/features/cat/hooks'
+import Input from '@/components/Input'
 
 export default function Home() {
-  const cats = Object.values(useAppSelector(selectCats)) as ICat[]
+  const { filteredCats: cats, query, setQuery } = useCats()
 
   return (
     <>
@@ -22,9 +21,18 @@ export default function Home() {
       </Head>
       <Container>
         <Main>
-          <Title type="h2" className="text-header">
-            Your Cats
-          </Title>
+          <div className="flex justify-between items-center">
+            <Title type="h2" className="text-header">
+              Your Cats
+            </Title>
+
+            <Input
+              type="text"
+              placeholder="Search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {cats.map((cat, index) => (

@@ -1,20 +1,27 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import {
+  AnyAction,
+  combineReducers,
+  configureStore,
+  MiddlewareArray,
+  ThunkMiddleware,
+} from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import catsReducer from './features/cat/catsSlice'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer, persistStore } from 'redux-persist'
+import type { PersistPartial } from 'redux-persist/lib/persistReducer'
+import type { CurriedGetDefaultMiddleware } from '@reduxjs/toolkit/dist/getDefaultMiddleware'
 
 const persistConfig = {
   key: 'root',
   storage,
 }
+const globalReducer = combineReducers({ cats: catsReducer })
+type RootState = ReturnType<typeof globalReducer> & PersistPartial
 
-const store = configureStore({
-  reducer: persistReducer(
-    persistConfig,
-    combineReducers({ cats: catsReducer })
-  ),
-  middleware: (getDefaultMiddleware) =>
+const store = configureStore<RootState, AnyAction>({
+  reducer: persistReducer(persistConfig, globalReducer),
+  middleware: (getDefaultMiddleware: CurriedGetDefaultMiddleware<RootState>) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [
@@ -26,7 +33,7 @@ const store = configureStore({
           'persist/REGISTER',
         ],
       },
-    }),
+    }) as unknown as [ThunkMiddleware<RootState, AnyAction, undefined>],
 })
 
 export const persistor = persistStore(store)
