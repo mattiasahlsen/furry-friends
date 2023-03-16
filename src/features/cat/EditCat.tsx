@@ -5,13 +5,14 @@ import { FileUploader } from 'react-drag-drop-files'
 import Image from 'next/image'
 import Button from '@/components/Button'
 import { useState } from 'react'
-import { ICat } from './types'
+import type { ICat } from './types'
 import s from './CreateCat.module.css'
 
 const DEFAULT_CAT = {
   name: '',
   description: '',
   image: '',
+  id: '',
 }
 
 interface EditCatProps {
@@ -54,57 +55,68 @@ export default function EditCat({
   }
 
   return (
-    <div
-      className={classNames(
-        'flex flex-col relative w-full max-w-md',
-        className
-      )}
-    >
-      <Title type="h4">Add a Fluffy Friend</Title>
-      <Input
-        className="mt-2"
-        value={cat.name}
-        onChange={(e) => setCat((prev) => ({ ...prev, name: e.target.value }))}
-        type="text"
-        label="Name"
-        placeholder="Cat name (required)"
-      />
-      <Input
-        className="mt-2"
-        value={cat.description}
-        onChange={(e) =>
-          setCat((prev) => ({ ...prev, description: e.target.value }))
-        }
-        type="textarea"
-        label="Description"
-        placeholder="Cat description (required)"
-      />
-
-      <FileUploader
-        handleChange={loadImage}
-        name="file"
-        types={['png', 'jpg', 'jpeg']}
-        label="Drag and drop your image file here"
-        classes={classNames(
-          '!w-full !border-solid !border-neutral-500',
-          s.fileUploader
+    <div className="w-full md:max-w-md lg:max-w-3xl">
+      <div
+        className={classNames(
+          'flex flex-col lg:flex-row lg:gap-x-8',
+          className
         )}
-      />
+      >
+        <div className="flex-1">
+          <Title type="h4">Add a Fluffy Friend</Title>
+          <Input
+            className="mt-4"
+            value={cat.name}
+            onChange={(e) =>
+              setCat((prev) => ({ ...prev, name: e.target.value }))
+            }
+            type="text"
+            label="Name"
+            placeholder="Cat name (required)"
+          />
+          <Input
+            className="mt-4"
+            value={cat.description}
+            onChange={(e) =>
+              setCat((prev) => ({ ...prev, description: e.target.value }))
+            }
+            type="textarea"
+            label="Description"
+            placeholder="Cat description (required)"
+          />
+        </div>
 
-      {cat.image && (
-        <Image
-          className="lg:absolute lg:ml-4 mt-2 lg:mt-4 lg:w-72 left-full rounded-md shadow-md"
-          src={cat.image}
-          alt={cat.name}
-          width={200}
-          height={200}
-          placeholder="empty"
-        />
-      )}
+        <div className="flex-1 mt-4 lg:mt-16">
+          <FileUploader
+            handleChange={loadImage}
+            name="file"
+            types={['png', 'jpg', 'jpeg']}
+            label={
+              cat.image
+                ? 'Drag and drop to replace image'
+                : 'Drag and drop your image file here'
+            }
+            classes={classNames(
+              '!w-full !border-solid !border-neutral-500',
+              s.fileUploader
+            )}
+          />
 
+          {cat.image && (
+            <Image
+              className="mt-2 lg:mt-4 w-full max-w-md max-h-60 object-cover left-full rounded-md shadow-md"
+              src={cat.image}
+              alt={cat.name}
+              width={200}
+              height={200}
+              placeholder="empty"
+            />
+          )}
+        </div>
+      </div>
       <Button
         type="primary"
-        className="mt-4"
+        className="mt-6 lg:mt-8 w-full"
         onClick={addCat}
         disabled={isDisabled}
       >

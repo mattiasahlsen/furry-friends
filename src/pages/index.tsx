@@ -7,9 +7,10 @@ import Title from '@/components/Title'
 import CreateCat from '@/features/cat/CreateCat'
 import { useAppSelector } from '@/store'
 import { selectCats } from '@/features/cat/catsSlice'
+import type { ICat } from '@/features/cat/types'
 
 export default function Home() {
-  const cats = Object.values(useAppSelector(selectCats))
+  const cats = Object.values(useAppSelector(selectCats)) as ICat[]
 
   return (
     <>
