@@ -11,8 +11,6 @@ import CreateCat from '@/features/cat/CreateCat'
 import { useState } from 'react'
 import { ICat } from '@/features/cat/types'
 
-const inter = Inter({ subsets: ['latin'] })
-
 export default function Home() {
   const [cats, setCats] = useState<ICat[]>(CATS)
 
@@ -20,6 +18,14 @@ export default function Home() {
     setCats((prev) => {
       const newCats = [...prev]
       newCats[index] = cat
+      return newCats
+    })
+  }
+
+  const removeCat = (index: number) => {
+    setCats((prev) => {
+      const newCats = [...prev]
+      newCats.splice(index, 1)
       return newCats
     })
   }
@@ -42,6 +48,7 @@ export default function Home() {
                 key={index}
                 cat={cat}
                 onUpdate={(newCat) => updateCat(index, newCat)}
+                onRemove={() => removeCat(index)}
               />
             ))}
             <CreateCat onAdd={(cat) => setCats((prev) => [...prev, cat])} />

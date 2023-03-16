@@ -9,8 +9,9 @@ import { ICat } from './types'
 interface CatProps {
   cat: ICat
   onUpdate: (cat: ICat) => void
+  onRemove: () => void
 }
-export default function Cat({ cat, onUpdate }: CatProps) {
+export default function Cat({ cat, onUpdate, onRemove }: CatProps) {
   const { name, description, image } = cat
 
   const [editing, setEditing] = useState(false)
@@ -24,6 +25,12 @@ export default function Cat({ cat, onUpdate }: CatProps) {
             size={24}
             className="cursor-pointer"
             onClick={() => setEditing(true)}
+          />
+          <Icon
+            name="IoMdClose"
+            size={24}
+            className="cursor-pointer"
+            onClick={onRemove}
           />
         </div>
         <div className="flex px-4 pb-4">
