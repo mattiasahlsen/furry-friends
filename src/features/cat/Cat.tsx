@@ -1,7 +1,7 @@
 import Icon from '@/components/Icon'
 import { Popup } from '@/components/Popup'
 import Title from '@/components/Title'
-import { useAppDispatch } from '@/store'
+import { useAppDispatch, useAppSelector } from '@/store'
 import Image from 'next/image'
 import { useState } from 'react'
 import { removeCat, updateCat } from './catsSlice'
@@ -9,9 +9,10 @@ import EditCat from './EditCat'
 import type { ICat } from './types'
 
 interface CatProps {
-  cat: ICat
+  catId: string
 }
-export default function Cat({ cat }: CatProps) {
+export default function Cat({ catId }: CatProps) {
+  const cat = useAppSelector((state) => state.cats.cats[catId])
   const { name, description, image } = cat
   const dispatch = useAppDispatch()
 

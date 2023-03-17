@@ -12,7 +12,7 @@ describe('Cat', () => {
 
     render(
       <Provider store={store}>
-        <Cat cat={cat} />
+        <Cat catId={cat.id} />
       </Provider>
     )
 
@@ -31,7 +31,7 @@ describe('Cat', () => {
 
     render(
       <Provider store={store}>
-        <Cat cat={cat} />
+        <Cat catId={cat.id} />
       </Provider>
     )
 
@@ -65,6 +65,9 @@ describe('Cat', () => {
     expect(id).toBe('1')
     expect(catData.name).toBe('Fluffy')
     expect(catData.description).toBe('He is cute')
+
+    expect(screen.getByText('Fluffy')).toBeInTheDocument()
+    expect(screen.getByText('He is cute')).toBeInTheDocument()
   })
 })
 
