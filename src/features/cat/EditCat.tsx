@@ -4,14 +4,14 @@ import classNames from 'classnames'
 import { FileUploader } from 'react-drag-drop-files'
 import Image from 'next/image'
 import Button from '@/components/Button'
-import { SyntheticEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ICat } from './types'
 import s from './CreateCat.module.css'
 import { makeId } from '@/lib/string'
 import Select from '@/components/Select'
 import { GENDER } from './catConstants'
 
-const createCat = () => ({
+const createEmptyCat = () => ({
   name: '',
   description: '',
   image: '',
@@ -34,7 +34,7 @@ export default function EditCat({
   cat: catToEdit,
 }: EditCatProps) {
   const [cat, setCat] = useState<ICat>(
-    catToEdit ? { ...catToEdit } : createCat()
+    catToEdit ? { ...catToEdit } : createEmptyCat()
   )
   const [imageSrc, setImageSrc] = useState<string>(cat.image ?? '')
   const [imageRef, setImageRef] = useState<HTMLImageElement | null>(null)
@@ -44,14 +44,14 @@ export default function EditCat({
 
   const close = () => {
     onCancel()
-    setCat(createCat())
+    setCat(createEmptyCat())
   }
   const addCat = () => {
     onDone(cat)
     close()
   }
 
-  const loadImage = async (file: File) => {
+  const loadImageFileAsDataUrl = async (file: File) => {
     try {
       const reader = new FileReader()
       reader.readAsDataURL(file)
@@ -62,26 +62,31 @@ export default function EditCat({
       console.error('error', error)
     }
   }
+  const saveDownscaledImageToCatAsDataUrl = () => {
+    if (!imageRef) {
+      console.error('error', 'no imageRef')
+      return
+    }
+
+    let canvas = document.createElement('canvas')
+    let ctx = canvas.getContext('2d')
+    if (!ctx) {
+      console.error('error', 'no context')
+      return
+    }
+
+    const scale = Math.min(1, 300 / imageRef.naturalWidth)
+
+    canvas.width = imageRef.naturalWidth * scale
+    canvas.height = imageRef.naturalHeight * scale
+    ctx.drawImage(imageRef, 0, 0, canvas.width, canvas.height)
+    setCat((prev) => ({ ...prev, image: canvas.toDataURL() }))
+  }
 
   useEffect(() => {
     if (imageRef) {
-      imageRef.addEventListener('load', () => {
-        let canvas = document.createElement('canvas')
-        let ctx = canvas.getContext('2d')
-        if (!ctx) {
-          console.error('error', 'no context')
-          return
-        }
-
-        const scale = Math.min(1, 300 / imageRef.naturalWidth)
-
-        canvas.width = imageRef.naturalWidth * scale
-        canvas.height = imageRef.naturalHeight * scale
-        ctx.drawImage(imageRef, 0, 0, canvas.width, canvas.height)
-        setCat((prev) => ({ ...prev, image: canvas.toDataURL() }))
-      })
+      imageRef.addEventListener('load', saveDownscaledImageToCatAsDataUrl)
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageRef])
 
@@ -157,7 +162,7 @@ export default function EditCat({
 
         <div className="flex-1 mt-4 lg:mt-16">
           <FileUploader
-            handleChange={loadImage}
+            handleChange={loadImageFileAsDataUrl}
             name="file"
             types={['png', 'jpg', 'jpeg']}
             label={
@@ -197,6 +202,7 @@ export default function EditCat({
           )}
         </div>
       </div>
+
       <Button
         type="primary"
         className="mt-6 lg:mt-8 w-full"

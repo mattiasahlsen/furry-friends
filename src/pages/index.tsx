@@ -1,11 +1,10 @@
 import Head from 'next/head'
-import { Inter } from 'next/font/google'
 import Cat from '@/features/cat/Cat'
 import Container from '@/components/Container'
 import Main from '@/components/Main'
 import Title from '@/components/Title'
 import CreateCat from '@/features/cat/CreateCat'
-import { useCats } from '@/features/cat/hooks'
+import { useCats } from '@/features/cat/catHooks'
 import Input from '@/components/Input'
 
 export default function Home() {

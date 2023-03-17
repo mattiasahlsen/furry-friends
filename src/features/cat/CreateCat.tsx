@@ -6,7 +6,6 @@ import Icon from '@/components/Icon'
 import EditCat from './EditCat'
 import { useAppDispatch } from '@/store'
 import { addCat } from './catsSlice'
-import { makeId } from '@/lib/string'
 
 interface CreateCatProps {}
 export default function CreateCat(props: CreateCatProps) {

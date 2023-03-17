@@ -13,7 +13,6 @@ interface CatProps {
 }
 export default function Cat({ cat }: CatProps) {
   const { name, description, image } = cat
-
   const dispatch = useAppDispatch()
 
   const [editing, setEditing] = useState(false)
