@@ -1,15 +1,20 @@
+# Furry Friends
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Demo
 
-First, run the development server:
+
+https://user-images.githubusercontent.com/10047604/225887600-6e2ca104-f6e9-4686-9332-0d0dfe391bab.mov
+
+
+
+## Getting Started
+First run `npm install`
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
