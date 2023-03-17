@@ -19,26 +19,37 @@ const persistConfig = {
 const globalReducer = combineReducers({ cats: catsReducer })
 type RootState = ReturnType<typeof globalReducer> & PersistPartial
 
-const store = configureStore<RootState, AnyAction>({
-  reducer: persistReducer(persistConfig, globalReducer),
-  middleware: (getDefaultMiddleware: CurriedGetDefaultMiddleware<RootState>) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [
-          'persist/PERSIST',
-          'persist/REHYDRATE',
-          'persist/PURGE',
-          'persist/FLUSH',
-          'persist/PAUSE',
-          'persist/REGISTER',
-        ],
-      },
-    }) as unknown as [ThunkMiddleware<RootState, AnyAction, undefined>],
-})
+export function makeStore(
+  persist = false,
+  preloadedState?: ReturnType<typeof globalReducer>
+) {
+  return persist
+    ? configureStore<RootState, AnyAction>({
+        reducer: persistReducer(persistConfig, globalReducer),
+        middleware: (
+          getDefaultMiddleware: CurriedGetDefaultMiddleware<RootState>
+        ) =>
+          getDefaultMiddleware({
+            serializableCheck: {
+              ignoredActions: [
+                'persist/PERSIST',
+                'persist/REHYDRATE',
+                'persist/PURGE',
+                'persist/FLUSH',
+                'persist/PAUSE',
+                'persist/REGISTER',
+              ],
+            },
+          }) as unknown as [ThunkMiddleware<RootState, AnyAction, undefined>],
+        preloadedState,
+      })
+    : configureStore({ reducer: globalReducer, preloadedState })
+}
+
+const store = makeStore(true)
+export default store
 
 export const persistor = persistStore(store)
-
-export default store
 
 export type AppState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

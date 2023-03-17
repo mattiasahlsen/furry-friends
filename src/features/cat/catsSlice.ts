@@ -24,14 +24,14 @@ const initialStateCats: Record<string, ICat> = CATS.map((catData) => {
 
 export const catsSlice = createSlice({
   name: 'cats',
-  initialState: {
+  initialState: () => ({
     cats: initialStateCats,
     loading: false,
     error: null,
 
     loadingCat: {} as Record<string, boolean>,
     errorCat: {} as Record<string, string>,
-  },
+  }),
   reducers: {
     updateCat: (
       state,

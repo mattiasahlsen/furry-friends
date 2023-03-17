@@ -26,6 +26,7 @@ export default function Cat({ cat }: CatProps) {
             size={24}
             className="cursor-pointer"
             onClick={() => setEditing(true)}
+            testId="edit-cat"
           />
           <Icon
             name="IoMdClose"

@@ -115,7 +115,9 @@ export default function EditCat({
         )}
       >
         <div className="flex-1">
-          <Title type="h4">Add a Fluffy Friend</Title>
+          <Title type="h4">
+            {catToEdit ? 'Edit your Furry Friend' : 'Add a Furry Friend'}
+          </Title>
           <Input
             className="mt-2"
             value={cat.name}
@@ -125,6 +127,7 @@ export default function EditCat({
             type="text"
             label="Name"
             placeholder="Cat name (required)"
+            data-testid="cat-name-input"
           />
           <Input
             className="mt-2"
@@ -135,6 +138,7 @@ export default function EditCat({
             type="textarea"
             label="Bio"
             placeholder="Cat bio (required)"
+            data-testid="cat-description-input"
           />
 
           <Input
@@ -147,6 +151,7 @@ export default function EditCat({
             }
             type="date"
             label="Date of birth"
+            data-testid="cat-birth-input"
           />
 
           <Select

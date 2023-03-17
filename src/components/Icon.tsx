@@ -7,9 +7,16 @@ interface IconProps {
   name: keyof typeof Icons | keyof typeof Icons2
   onClick?: () => void
   size?: number
+  testId?: string
 }
 
-export default function Icon({ className, name, onClick, size }: IconProps) {
+export default function Icon({
+  className,
+  name,
+  onClick,
+  size,
+  testId,
+}: IconProps) {
   const Icon =
     name in Icons
       ? Icons[name as keyof typeof Icons]
@@ -27,6 +34,7 @@ export default function Icon({ className, name, onClick, size }: IconProps) {
       strokeWidth={`${mySize}`}
       fontSize={`${mySize}px`}
       onClick={onClick}
+      data-testid={testId}
     />
   )
 }
